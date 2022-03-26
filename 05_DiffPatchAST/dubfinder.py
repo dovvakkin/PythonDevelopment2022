@@ -10,6 +10,7 @@ import importlib
 CORRECT_ARGV_LEN = 3
 EMPTY_IDENTIFIER = '_'
 INNER_CLASS_MARKER = '__'
+DUB_RATIO_THRESHOLD = 0.95
 ATTRS_TO_RESET_TO_EMPTY = ('name', 'id', 'arg', 'attr')
 
 
@@ -70,7 +71,10 @@ def yield_similar_pairs(name_to_source1, name_to_source2):
             if name1 == name2:
                 continue
 
-            if difflib.SequenceMatcher(None, name_to_source1[name1], name_to_source2[name2]).ratio() > 0.95:
+            ratio = difflib.SequenceMatcher(None, name_to_source1[name1],
+                                            name_to_source2[name2]).ratio()
+
+            if ratio > DUB_RATIO_THRESHOLD:
                 yield name1, name2
 
 
